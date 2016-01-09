@@ -1,25 +1,26 @@
 <h1>Contact Us</h1>
 
 <?php
- 
+
 if(isset($_POST['email'])) {
 
 	// Cambiando queste due linee qui sotto si configura il modulo di invio
 	$email_to = "alessandro@pellegrini.tk";
-	$email_subject = "ROMA 132: Nuovo Messaggio";
+	$email_subject = "mdsite: Nuovo Messaggio";
  
 	function died($error) {
 		// your error code can go here
-		echo "Ci dispiace, ma non siamo in grado di processare il messaggio. ";
-		echo "Si sono verificati alcuni errori, che riportiamo qui di seguito.<br /><br />";
+		echo "We're sorry, but we're unable to process your message. ";
+		echo "Some errors occurred. We report them below.<br /><br />";
 		echo $error."<br /><br />";
+		echo '<a href="javascript:history.back()">Go back</a> and try again.';
 		die();
 	}
  
 	 
 	// validation expected data exists
 	if(!isset($_POST['name']) || !isset($_POST['email']) || !isset($_POST['message']) || !isset($_POST['captcha'])) {
-		died('&Eacute; necessario compilare tutti i campi!');	   
+		died('All fields must be filled!');	   
 	 }
  
 
@@ -32,20 +33,20 @@ if(isset($_POST['email'])) {
 	// A bunch of sanity checks...
 	$email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
 	if(!preg_match($email_exp, $email_from)) {
-		$error_message .= "L'indirizzo email inserito non sembra essere valido.<br />";
+		$error_message .= "It looks like your email address is not valid.<br />";
 	}
  
 	$string_exp = "/^[A-Za-z .'-]+$/";
 	if(!preg_match($string_exp, $name)) {
- 		$error_message .= 'Il nome inserito ' . $name . ' non sembra essere valido.<br />';
+ 		$error_message .= 'The name ' . $name . ' doesn\'t seem to be valid.<br />';
  	}
  
 	if(strlen($message) < 10) {
- 		$error_message .= 'Il messaggio inserito non sembra essere valido.<br />';
+ 		$error_message .= 'Your message is too short.<br />';
  	}
 
 	if($_POST['captcha'] != $_POST['captcha_solve']) {
- 		$error_message .= 'Codice di controllo ' . $_POST['captcha'] . ' errato.<br />';
+ 		$error_message .= 'Wrong captcha code: ' . $_POST['captcha'] . '.<br />';
  	}
  
 	// If we have encountered any error, show it and die...
@@ -54,7 +55,7 @@ if(isset($_POST['email'])) {
  	}
  
 
-	$email_message = "Hai ricevuto una nuova comunicazione dal sito del Roma 132.\n\n";
+	$email_message = "A new email has been sent via the mdsite demo page.\n\n";
  
 	// Avoid spammers to use this form...
 	function clean_string($string) {
@@ -62,21 +63,21 @@ if(isset($_POST['email'])) {
 		return str_replace($bad,"",$string);
 	}
 
- 	$email_message .= "Nome: ".clean_string($name)."\n";
+ 	$email_message .= "Name: ".clean_string($name)."\n";
  	$email_message .= "Email: ".clean_string($email_from)."\n";
- 	$email_message .= "Messaggio: ".clean_string($message)."\n";
+ 	$email_message .= "Message: ".clean_string($message)."\n";
  
 	 // create email headers
-	$headers = 'From: '.$email_from."\n".
- 			'Reply-To: '.$email_from."\n" .
- 			'X-Mailer: PHP/' . phpversion();
+	$headers = 'From: '.$email_from."\n" .
+		   'Reply-To: '.$email_from."\n" .
+ 		   'X-Mailer: PHP/' . phpversion();
 
  	// Send the email
 	@mail($email_to, $email_subject, $email_message, $headers);  
  
 ?>
  
-<p>Messaggio inviato con successo. Vi risponderemo quanto prima!</p>
+<p>Message correctly received. We'll get back to you as soon as possible!</p>
  
 <?php
  
@@ -89,9 +90,9 @@ $c=$a+$b;
 
 ?>
 
-<p>The source of this file is written in PHP. In this way, adding a contact-us form is as easy as reusing code already available around!</p>
+<p>The source of this file is written in PHP. In this way, adding a contact-us form is as easy as reusing code already available around! (You can even just use this template: is quite simple and has some basic security checks!)</p>
 
-<form name="contactform" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form name="contactform" method="post" action="<?php echo $_SERVER['PHP_SELF'] .'?'. $_SERVER['QUERY_STRING']; ?>">
 <table width="80%">
 <tr>
 	<td valign="top">
@@ -119,7 +120,7 @@ $c=$a+$b;
 </tr>
 <tr>
 	<td valign="top">
-		<label for="captcha">Sei umano? *</label>
+		<label for="captcha">Are you human? *</label>
 	</td>
 	<td valign="top">
 		<?php echo $a; ?> + <?php echo $b; ?> = 
