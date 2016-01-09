@@ -156,10 +156,11 @@ function php_file_tree_dir($directory, $return_link, $extensions = array(), $ign
 		}		
 	}
 
-	if(count($file) > 2) { // Use 2 instead of 0 to account for . and .. "directories"
+	if(count($file) > 0) {
 		$php_file_tree = "<ul>";
 		foreach( $file as $this_file ) {
-			if( $this_file != "." && $this_file != ".." ) {
+
+			if( $this_file[0] != ".") {
 				$link = str_replace("[link]", "$directory/" . urlencode( pathinfo($this_file, PATHINFO_FILENAME) ), $return_link);
 				$link = str_replace($main_folder, "", $link);
 				$menu_name = apply_menu_icon(htmlspecialchars(sanitize_entry($this_file)));
