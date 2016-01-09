@@ -19,10 +19,14 @@
 	      </h1>
             </header>
 		
-	        <nav><?php menu(); ?></nav>
+		<nav>
+<?php menu(); ?>
+		</nav>
 
             <div id="central">
-             	<div id="content"><?php content(); ?></div>
+		<div id="content">
+<?php content(); ?>
+		</div>
             </div>
           </main>
 
