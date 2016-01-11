@@ -1,6 +1,6 @@
-PAGINA NON TROVATA
-==================
+PAGE NOT FOUND
+==============
 
 
-![Pagina non Trovata](/img/404.png "Pagina non trovata")
+![Page not found](img/404.png "Page not found")
 
