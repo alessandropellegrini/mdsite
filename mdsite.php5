@@ -119,14 +119,6 @@ function php_file_tree_dir($directory, $return_link, $whole, $extensions = array
 		$file = php4_scandir($directory);
 	natcasesort($file);
 
-	// Make directories first
-	$files = $dirs = array();
-	foreach($file as $this_file) {
-		if( is_dir("$directory/$this_file" ) ) $dirs[] = $this_file;
-		else $files[] = $this_file;
-	}
-	$file = array_merge($dirs, $files);
-
 	// Purge unwanted / unneeded elements from the scanned array
 	foreach( array_keys($file) as $key ) {
 
