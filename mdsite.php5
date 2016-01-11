@@ -91,17 +91,17 @@ function should_hide($directory, $page, $call_level) {
 }
 
 
-function php_file_tree($directory, $return_link, $extensions = array(), $ignored_files = array()) {
+function php_file_tree($directory, $return_link, $whole, $extensions = array(), $ignored_files = array()) {
 	// Generates a valid XHTML list of all directories, sub-directories, and files in $directory
 	// Remove trailing slash
 	if( substr($directory, -1) == "/" )
 		$directory = substr($directory, 0, strlen($directory) - 1);
-	$code = php_file_tree_dir($directory, $return_link, $extensions, $ignored_files);
+	$code = php_file_tree_dir($directory, $return_link, $whole, $extensions, $ignored_files);
 	return $code;
 }
 
 
-function php_file_tree_dir($directory, $return_link, $extensions = array(), $ignored_files = array(), $call_level = 0) {
+function php_file_tree_dir($directory, $return_link, $whole, $extensions = array(), $ignored_files = array(), $call_level = 0) {
 	global $main_folder, $default_content;
 
 	$php_file_tree = '';
@@ -109,7 +109,7 @@ function php_file_tree_dir($directory, $return_link, $extensions = array(), $ign
 	$page = (isset($_GET['p']) ? $_GET['p'] : $default_content);
 
 	// Show only entries related to current path (one level more)
-	if( should_hide($directory, $page, $call_level) )
+	if( $whole == false && should_hide($directory, $page, $call_level) )
 		return "";
 
 	// Get and sort directories/files
@@ -168,7 +168,7 @@ function php_file_tree_dir($directory, $return_link, $extensions = array(), $ign
 				if( is_dir("$directory/$this_file") ) {
 					// Directory
 					$php_file_tree .= "<li><a href=\"$link\">" . $menu_name . "</a>";
-					$php_file_tree .= php_file_tree_dir("$directory/$this_file", $return_link, $extensions, $ignored_files, $call_level+1);
+					$php_file_tree .= php_file_tree_dir("$directory/$this_file", $return_link, $whole, $extensions, $ignored_files, $call_level+1);
 					$php_file_tree .= "</li>";
 				} else {
 					// File
@@ -192,9 +192,9 @@ function php4_scandir($dir) {
 	return($files);
 }
 
-function menu() {
+function menu($whole = false) {
 	global $main_folder, $return_link, $allowed_files, $ignored_files;
-	echo php_file_tree($main_folder, $return_link, $allowed_files, $ignored_files);
+	echo php_file_tree($main_folder, $return_link, $whole, $allowed_files, $ignored_files);
 }
 
 function content() {
